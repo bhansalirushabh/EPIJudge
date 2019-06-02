@@ -1,16 +1,67 @@
+/**Problem 5.1. pg. 42*/
+
 package epi;
 import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 public class DutchNationalFlag {
   public enum Color { RED, WHITE, BLUE }
 
   public static void dutchFlagPartition(int pivotIndex, List<Color> A) {
     // TODO - you fill in here.
-    return;
+    Color pivot = A.get(pivotIndex);
+    int l=0;
+    int r=A.size()-1;
+    //int lr =0;
+
+    while(true){
+      //find an element bigger than pivot
+      while(l<=A.size()-1 && A.get(l).ordinal() <= pivot.ordinal() ){
+        l++;
+      }
+      //find an element not bigger than pivot
+      while(r>=0 && A.get(r).ordinal() > pivot.ordinal()){
+        r --;
+      }
+
+      if(l<r){
+        Collections.swap(A,l,r);
+      }
+      else{
+        break;
+      }
+    }
+
+    l=0;
+    int lmax = A.size()-1;
+    r=A.size()-1;
+    //iterate over bigger than pivot element
+    while(A.get(r).ordinal()>pivot.ordinal()){
+      r --;
+    }
+    lmax = r;
+
+    while(true){
+      //find an element equal to pivor
+      while(l<=lmax &&  A.get(l).ordinal() != pivot.ordinal() ){
+        l++;
+      }
+      //find an element not equal to the pivot (i.e smaller than in the group)
+      while( r>=0 && A.get(r).ordinal() == pivot.ordinal() ){
+        r --;
+      }
+      if(l<r){
+        Collections.swap(A,l,r);
+      }
+      else{
+        break;
+      }
+    }
+
   }
   @EpiTest(testDataFile = "dutch_national_flag.tsv")
   public static void dutchFlagPartitionWrapper(TimedExecutor executor,
